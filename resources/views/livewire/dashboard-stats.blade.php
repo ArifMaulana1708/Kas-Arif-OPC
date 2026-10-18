@@ -5,7 +5,7 @@
                 <label class="form-label small">Periode (Bulan)</label>
                 <input type="month" wire:model.live="bulan" class="form-control">
             </div>
-            <div class="col-4 col-md-9 text-muted small">Periode: {{ $start }} s/d {{ $end }}</div>
+            {{-- <div class="col-4 col-md-9 text-muted small">Periode: {{ $start }} s/d {{ $end }}</div> --}}
         </div>
     </form>
 

@@ -2,8 +2,13 @@
 @section('title', 'TF Antar Bank')
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-        <h5 class="m-0">TF Antar Bank <small class="text-muted">({{ $start }} s/d {{ $end }})</small>
-            <span class="badge text-bg-primary">TF: {{ rupiah($total) }}</span>
+        <h5 class="m-0">TF Antar Bank - Index
+            <small class="text-muted">
+                {{-- ({{ $start }} s/d {{ $end }}) --}}
+            </small>
+            <br>
+            <span class="badge text-bg-primary">Total: {{ rupiah($total) }}</span>
+
             <span class="badge text-bg-warning">Admin: {{ rupiah($totalAdmin ?? 0) }}</span>
         </h5>
         <button class="btn btn-purple btn-sm" data-bs-toggle="modal" data-bs-target="#addTf"><i class="bi bi-plus"></i>

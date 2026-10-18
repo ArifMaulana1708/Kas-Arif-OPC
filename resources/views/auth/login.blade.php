@@ -43,7 +43,7 @@
         </form>
         <div class="d-flex justify-content-between mt-3 small">
             <a href="{{ route('register') }}">Daftar User</a>
-            <a href="{{ route('adm_regist') }}">Daftar Admin</a>
+            {{-- <a href="{{ route('adm_regist') }}">Daftar Admin</a> --}}
         </div>
     </div>
 </body>

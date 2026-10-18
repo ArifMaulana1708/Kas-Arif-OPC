@@ -2,20 +2,20 @@
 @section('title', 'Laporan')
 @section('content')
     <h5>
-        Laporan Keuangan</h5>
+        Laporan Keuangan - Index</h5>
     <div class="card content-card p-3 mb-3">
         <form method="GET" class="row g-2 align-items-end">
             <div class="col-6 col-md-3"><label class="form-label small">Dari</label><input type="date" name="date_start"
                     value="{{ $start }}" class="form-control form-control-sm"></div>
             <div class="col-6 col-md-3"><label class="form-label small">Sampai</label><input type="date" name="date_end"
                     value="{{ $end }}" class="form-control form-control-sm"></div>
-            <div class="col-6 col-md-2"><label class="form-label small">Status</label><select name="status"
+            <div class="col-5 col-md-2"><label class="form-label small">Status</label><select name="status"
                     class="form-select form-select-sm">
                     <option {{ $status == 'Semua' ? 'selected' : '' }}>Semua</option>
                     <option {{ $status == 'Uang Masuk' ? 'selected' : '' }}>Uang Masuk</option>
                     <option {{ $status == 'Uang Keluar' ? 'selected' : '' }}>Uang Keluar</option>
                 </select></div>
-            <div class="col-6 col-md-4 d-flex gap-2">
+            <div class="col-7 col-md-4 d-flex gap-2">
                 <button class="btn btn-purple btn-sm">Tampilkan</button>
                 <a href="{{ route('laporan.excel', request()->all()) }}" class="btn btn-success btn-sm"><i
                         class="bi bi-file-excel"></i> Excel</a>
@@ -52,7 +52,8 @@
                 <tbody>
                     @forelse($data as $r)
                         <tr>
-                            <td class="text-nowrap" data-order="{{ $r->tanggal_keuangan->format('Y-m-d') }}">{{ $r->tanggal_keuangan->format('d-m-Y') }}</td>
+                            <td class="text-nowrap" data-order="{{ $r->tanggal_keuangan->format('Y-m-d') }}">
+                                {{ $r->tanggal_keuangan->format('d-m-Y') }}</td>
                             <td><span
                                     class="badge {{ $r->status == 'Uang Masuk' ? 'text-bg-success' : 'text-bg-danger' }}">{{ $r->status }}</span>
                             </td>

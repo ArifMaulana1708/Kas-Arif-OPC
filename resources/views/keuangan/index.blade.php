@@ -2,7 +2,11 @@
 @section('title', $status)
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="m-0">{{ $status }} <small class="text-muted">({{ $start }} s/d {{ $end }})</small>
+        <h5 class="m-0">
+            {{ $status }} - Index
+            <small class="text-muted">
+                {{-- ({{ $start }} s/d {{ $end }}) --}}
+            </small>
         </h5>
         @if (auth()->user()->isAdmin())
             <button class="btn btn-purple btn-sm" data-bs-toggle="modal" data-bs-target="#tambahModal"><i
