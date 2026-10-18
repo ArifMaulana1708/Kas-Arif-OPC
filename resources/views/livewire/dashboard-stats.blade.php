@@ -54,7 +54,7 @@
     </div>
 </div>
 
-@push('js')
+{{-- @push('js')
     <script>
         document.addEventListener('livewire:init', () => {
             const draw = () => {
@@ -103,6 +103,60 @@
             };
             draw();
             Livewire.hook('morph.updated', () => draw());
+        });
+    </script>
+@endpush --}}
+
+@push('js')
+    <script>
+        document.addEventListener('livewire:init', () => {
+            const draw = (labels, masuk, keluar, kategori, total) => {
+                if (window._ch1) window._ch1.destroy();
+                window._ch1 = new Chart(document.getElementById('chartHarian'), {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                                label: 'Masuk',
+                                data: masuk,
+                                backgroundColor: '#1ed6a0'
+                            },
+                            {
+                                label: 'Keluar',
+                                data: keluar,
+                                backgroundColor: '#ff6b6b'
+                            },
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+
+                if (window._ch2) window._ch2.destroy();
+                window._ch2 = new Chart(document.getElementById('chartDonut'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: kategori,
+                        datasets: [{
+                            data: total
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            };
+
+            // draw awal (data bulan yang lagi dibuka)
+            draw(@js($labels), @js($dataMasuk), @js($dataKeluar),
+                @js($perKategori->map(fn($x) => $x->kategori->nama_kategori ?? '-')->values()),
+                @js($perKategori->pluck('total')->values()));
+
+            // draw ulang tiap bulan ganti
+            Livewire.on('dashboard-updated', (e) => draw(e.labels, e.masuk, e.keluar, e.kategori, e.total));
         });
     </script>
 @endpush

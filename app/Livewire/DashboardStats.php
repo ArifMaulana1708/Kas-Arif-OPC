@@ -50,6 +50,15 @@ class DashboardStats extends Component
             ->groupBy('id_kategori')
             ->get();
 
+        $this->dispatch(
+            'dashboard-updated',
+            labels: $labels,
+            masuk: $dataMasuk,
+            keluar: $dataKeluar,
+            kategori: $perKategori->map(fn($x) => $x->kategori->nama_kategori ?? '-')->values(),
+            total: $perKategori->pluck('total')->values(),
+        );
+
         return view('livewire.dashboard-stats', compact(
             'masuk',
             'keluar',

@@ -33,7 +33,7 @@
 
     <div class="card content-card p-3">
         <div class="table-responsive">
-            <table class="table table-striped align-middle datatable livewire-table" id="keuTable-{{ md5($status) }}"
+            <table class="table datatable table-striped align-middle" id="keuTable-{{ md5($status) }}"
                 style="width:100%">
                 <thead class="table-light">
                     <tr>
@@ -82,6 +82,7 @@
                             @endif
                         </tr>
                     @empty
+
                     @endforelse
                 </tbody>
             </table>
@@ -141,36 +142,3 @@
         @endforeach
     @endif
 </div>
-
-@push('js')
-    <script>
-        (function() {
-            function initKeuTable() {
-                if (!window.jQuery || !jQuery.fn.DataTable) return;
-                jQuery('table.livewire-table').each(function() {
-                    if (jQuery.fn.DataTable.isDataTable(this)) {
-                        jQuery(this).DataTable().destroy();
-                    }
-                    jQuery(this).DataTable({
-                        responsive: true,
-                        pageLength: 10,
-                        lengthMenu: [10, 25, 50, 100],
-                        order: [
-                            [0, 'desc']
-                        ],
-                        language: {
-                            url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/id.json'
-                        }
-                    });
-                });
-            }
-            document.addEventListener('DOMContentLoaded', initKeuTable);
-            document.addEventListener('livewire:init', () => {
-                initKeuTable();
-                if (window.Livewire) {
-                    Livewire.hook('morph.updated', () => setTimeout(initKeuTable, 50));
-                }
-            });
-        })();
-    </script>
-@endpush
