@@ -23,7 +23,7 @@
     <div class="card shadow p-4" style="max-width:400px;width:100%">
         <h4 class="fw-bold text-center mb-1"> Kas Arif</h4>
         {{-- 💰 --}}
-        <img src="{{ asset('img/NovoResume.JPEG') }}" width="120" height="120"
+        <img src="{{ asset('img/NovoResume.jpeg') }}" width="120" height="120"
             class="rounded-circle border mx-auto mb-3" style="object-fit:cover" alt="Foto profil">
         <p class="text-muted text-center small">Silakan login</p>
         @if (session('success'))

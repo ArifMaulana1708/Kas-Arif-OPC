@@ -18,7 +18,7 @@
 <body class="d-flex align-items-center justify-content-center p-3">
     <div class="card shadow p-4" style="max-width:440px;width:100%;border-radius:16px">
         <h4 class="fw-bold text-center">{{ $isAdmin ? 'Daftar Admin' : 'Daftar User' }}</h4>
-        <img src="{{ asset('img/NovoResume.JPEG') }}" width="120" height="120"
+        <img src="{{ asset('img/NovoResume.jpeg') }}" width="120" height="120"
             class="rounded-circle border mx-auto mb-3" style="object-fit:cover" alt="Foto profil">
         @if ($errors->any())
             <div class="alert alert-danger py-2">
