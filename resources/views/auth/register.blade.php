@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $isAdmin ? 'Register Admin' : 'Register User' }} - Kas Arif</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <style>
         body {
             background: linear-gradient(135deg, #b66dff, #9a55ff);
@@ -17,6 +18,8 @@
 <body class="d-flex align-items-center justify-content-center p-3">
     <div class="card shadow p-4" style="max-width:440px;width:100%;border-radius:16px">
         <h4 class="fw-bold text-center">{{ $isAdmin ? 'Daftar Admin' : 'Daftar User' }}</h4>
+        <img src="{{ asset('img/NovoResume.JPEG') }}" width="120" height="120"
+            class="rounded-circle border mx-auto mb-3" style="object-fit:cover" alt="Foto profil">
         @if ($errors->any())
             <div class="alert alert-danger py-2">
                 <ul class="m-0 small">

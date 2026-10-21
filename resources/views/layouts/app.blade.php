@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Kas Arif') - Kas Pribadi</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/Logo2.JPEG') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -200,100 +202,98 @@
 
 <body>
     <div class="app-wrapper">
-            <div id="sidebarOverlay"></div>
-            <aside class="sidebar p-3" id="sidebar">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="brand"><i class="bi bi-wallet2"></i> Kas Arif</div>
-                    <button class="btn btn-sm btn-light d-lg-none" id="sidebarClose" aria-label="Tutup menu"><i
-                            class="bi bi-x-lg"></i></button>
+        <div id="sidebarOverlay"></div>
+        <aside class="sidebar p-3" id="sidebar">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="brand"><i class="bi bi-wallet2"></i> Kas Arif</div>
+                <button class="btn btn-sm btn-light d-lg-none" id="sidebarClose" aria-label="Tutup menu"><i
+                        class="bi bi-x-lg"></i></button>
+            </div>
+            @php $me = auth()->user(); @endphp
+            <a href="{{ route('profil.index') }}" class="text-decoration-none text-white">
+                <div class="profile-box d-flex align-items-center gap-2 p-2 mb-3">
+                    @if ($me && $me->photo_profile)
+                        <img src="{{ asset('storage/' . $me->photo_profile) }}" width="44" height="44"
+                            class="rounded-circle border border-white" style="object-fit:cover" alt="Foto profil">
+                    @else
+                        <span class="badge text-bg-light rounded-circle p-2"><i class="bi bi-person fs-5"></i></span>
+                    @endif
+                    <div class="small lh-sm">
+                        <div class="fw-bold">{{ $me->name ?? '' }}</div>
+                        <div class="opacity-75"> • {{ ucfirst($me->role ?? '') }}</div>
+                        <div class="opacity-75"><i class="bi bi-pencil-square"></i> Edit Profil</div>
+                    </div>
                 </div>
-                @php $me = auth()->user(); @endphp
-                <a href="{{ route('profil.index') }}" class="text-decoration-none text-white">
-                    <div class="profile-box d-flex align-items-center gap-2 p-2 mb-3">
+            </a>
+            <nav class="nav flex-column">
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                    href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                @if (auth()->check() && auth()->user()->isAdmin())
+                    <a class="nav-link {{ request()->routeIs('bank.*') ? 'active' : '' }}"
+                        href="{{ route('bank.index') }}"><i class="bi bi-bank"></i> Bank</a>
+                    <a class="nav-link {{ request()->routeIs('kategori.*') ? 'active' : '' }}"
+                        href="{{ route('kategori.index') }}"><i class="bi bi-tags"></i> Kategori</a>
+                @endif
+                <a class="nav-link {{ request()->routeIs('masuk.*') ? 'active' : '' }}"
+                    href="{{ route('masuk.index') }}"><i class="bi bi-arrow-down-circle"></i> Uang Masuk</a>
+                <a class="nav-link {{ request()->routeIs('keluar.*') ? 'active' : '' }}"
+                    href="{{ route('keluar.index') }}"><i class="bi bi-arrow-up-circle"></i> Uang Keluar</a>
+                @if (auth()->check() && auth()->user()->isAdmin())
+                    <a class="nav-link {{ request()->routeIs('tf.*') ? 'active' : '' }}"
+                        href="{{ route('tf.index') }}"><i class="bi bi-arrow-left-right"></i> TF Antar Bank</a>
+                    <a class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}"
+                        href="{{ route('laporan.index') }}"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                    <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                        href="{{ route('users.index') }}"><i class="bi bi-people"></i> User</a>
+                @endif
+                <a class="nav-link {{ request()->routeIs('profil.*') ? 'active' : '' }}"
+                    href="{{ route('profil.index') }}"><i class="bi bi-person-circle"></i> Profil Saya</a>
+                <form method="POST" action="{{ route('logout') }}" class="mt-2">@csrf
+                    <button class="btn btn-light btn-sm w-100"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                </form>
+            </nav>
+        </aside>
+        <div class="main-wrapper">
+            <div class="topbar px-3 py-2 d-flex justify-content-between align-items-center sticky-top gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-secondary btn-sm d-lg-none" id="sidebarToggle"
+                        aria-label="Buka menu">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm d-none d-lg-inline-block" id="sidebarToggleDesktop"
+                        aria-label="Buka/tutup menu">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h5 class="m-0">@yield('title', 'Dashboard')</h5>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge text-bg-light d-none d-sm-inline">{{ now()->format('d M Y') }}</span>
+                    <a href="{{ route('profil.index') }}" class="text-decoration-none">
                         @if ($me && $me->photo_profile)
-                            <img src="{{ asset('storage/' . $me->photo_profile) }}" width="44" height="44"
-                                class="rounded-circle border border-white" style="object-fit:cover" alt="Foto profil">
+                            <img src="{{ asset('storage/' . $me->photo_profile) }}" width="36" height="36"
+                                class="rounded-circle border" style="object-fit:cover" alt="Foto profil">
                         @else
-                            <span class="badge text-bg-light rounded-circle p-2"><i
-                                    class="bi bi-person fs-5"></i></span>
+                            <span class="badge text-bg-secondary rounded-circle p-2"><i class="bi bi-person"></i></span>
                         @endif
-                        <div class="small lh-sm">
-                            <div class="fw-bold">{{ $me->name ?? '' }}</div>
-                            <div class="opacity-75"> • {{ ucfirst($me->role ?? '') }}</div>
-                            <div class="opacity-75"><i class="bi bi-pencil-square"></i> Edit Profil</div>
-                        </div>
-                    </div>
-                </a>
-                <nav class="nav flex-column">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                        href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                    @if (auth()->check() && auth()->user()->isAdmin())
-                        <a class="nav-link {{ request()->routeIs('bank.*') ? 'active' : '' }}"
-                            href="{{ route('bank.index') }}"><i class="bi bi-bank"></i> Bank</a>
-                        <a class="nav-link {{ request()->routeIs('kategori.*') ? 'active' : '' }}"
-                            href="{{ route('kategori.index') }}"><i class="bi bi-tags"></i> Kategori</a>
-                    @endif
-                    <a class="nav-link {{ request()->routeIs('masuk.*') ? 'active' : '' }}"
-                        href="{{ route('masuk.index') }}"><i class="bi bi-arrow-down-circle"></i> Uang Masuk</a>
-                    <a class="nav-link {{ request()->routeIs('keluar.*') ? 'active' : '' }}"
-                        href="{{ route('keluar.index') }}"><i class="bi bi-arrow-up-circle"></i> Uang Keluar</a>
-                    @if (auth()->check() && auth()->user()->isAdmin())
-                        <a class="nav-link {{ request()->routeIs('tf.*') ? 'active' : '' }}"
-                            href="{{ route('tf.index') }}"><i class="bi bi-arrow-left-right"></i> TF Antar Bank</a>
-                        <a class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}"
-                            href="{{ route('laporan.index') }}"><i class="bi bi-file-earmark-text"></i> Laporan</a>
-                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
-                            href="{{ route('users.index') }}"><i class="bi bi-people"></i> User</a>
-                    @endif
-                    <a class="nav-link {{ request()->routeIs('profil.*') ? 'active' : '' }}"
-                        href="{{ route('profil.index') }}"><i class="bi bi-person-circle"></i> Profil Saya</a>
-                    <form method="POST" action="{{ route('logout') }}" class="mt-2">@csrf
-                        <button class="btn btn-light btn-sm w-100"><i class="bi bi-box-arrow-right"></i> Logout</button>
-                    </form>
-                </nav>
-            </aside>
-            <div class="main-wrapper">
-                <div class="topbar px-3 py-2 d-flex justify-content-between align-items-center sticky-top gap-2">
-                    <div class="d-flex align-items-center gap-2">
-                        <button class="btn btn-outline-secondary btn-sm d-lg-none" id="sidebarToggle"
-                            aria-label="Buka menu">
-                            <i class="bi bi-list"></i>
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm d-none d-lg-inline-block"
-                            id="sidebarToggleDesktop" aria-label="Buka/tutup menu">
-                            <i class="bi bi-list"></i>
-                        </button>
-                        <h5 class="m-0">@yield('title', 'Dashboard')</h5>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge text-bg-light d-none d-sm-inline">{{ now()->format('d M Y') }}</span>
-                        <a href="{{ route('profil.index') }}" class="text-decoration-none">
-                            @if ($me && $me->photo_profile)
-                                <img src="{{ asset('storage/' . $me->photo_profile) }}" width="36" height="36"
-                                    class="rounded-circle border" style="object-fit:cover" alt="Foto profil">
-                            @else
-                                <span class="badge text-bg-secondary rounded-circle p-2"><i
-                                        class="bi bi-person"></i></span>
-                            @endif
-                        </a>
-                    </div>
-                </div>
-                <div class="p-3">
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="m-0">
-                                @foreach ($errors->all() as $e)
-                                    <li>{{ $e }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    @yield('content')
+                    </a>
                 </div>
             </div>
+            <div class="p-3">
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="m-0">
+                            @foreach ($errors->all() as $e)
+                                <li>{{ $e }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @yield('content')
+            </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
